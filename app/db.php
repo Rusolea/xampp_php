@@ -39,8 +39,7 @@ function insertTask($titulo, $descripcion, $prioridad){
     //bindvalue es para asignarle un valor a cada ?
     $sentencia = $db->prepare("INSERT INTO tareas(titulo, descripcion, prioridad) VALUES(?,?,?)");  
     //ejecuto la sentencia
-    $sentencia->execute(array($titulo, $descripcion, $prioridad));
-
+    
     $success = $sentencia->execute(array($titulo, $descripcion, $prioridad));
     //el id es autoincremental, no lo inserto
 
