@@ -40,18 +40,28 @@ function insertTask($titulo, $descripcion, $prioridad){
     $sentencia = $db->prepare("INSERT INTO tareas(titulo, descripcion, prioridad) VALUES(?,?,?)");  
     //ejecuto la sentencia
     $sentencia->execute(array($titulo, $descripcion, $prioridad));
+
+    $success = $sentencia->execute(array($titulo, $descripcion, $prioridad));
     //el id es autoincremental, no lo inserto
 
     //inserto la tarea en la base de datos
     //devuelvo el id de la tarea insertada para verificar que se inserto correctamente
-    $id = insertTask($titulo, $descripcion, $prioridad);
-    echo "Tarea insertada con exito";
-    if($id > 0) {
-        //redirijo a la pagina de listar
-        header('Location: ' . BASE_URL . 'listar');
-    } else {
-        echo "Error al insertar la tarea";
-    }
+    return $success;
 
+}
 
+function deleteTask($id) {
+    $db = getConnection();
+    //preparo la sentencia para eliminar en la base de datos y prevengo inyeccion sql con ?, ?, ?,
+    //bindvalue es para asignarle un valor a cada ?
+    $sentencia = $db->prepare("DELETE FROM tareas WHERE id=?");  
+    //ejecuto la sentencia
+    $sentencia->execute(array($id));
+
+    $success = $sentencia->execute(array($id));
+    //el id es autoincremental, no lo inserto
+
+    //inserto la tarea en la base de datos
+    //devuelvo el id de la tarea insertada para verificar que se inserto correctamente
+    return $success;
 }

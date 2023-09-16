@@ -30,6 +30,8 @@ function showTasks() {
                     <td><?php echo $task->descripcion ?></td>
                     <td><?php echo $task->prioridad ?></td>
                     <td><?php echo $task->finalizada ?></td>
+                    <td><a href="eliminar/<?php echo $task->id; ?>" type="button" class="btn btn-danger">Eliminar</a></td>
+
                 </tr>
             <?php endforeach; ?>
         </tbody>    
@@ -44,18 +46,37 @@ function showTasks() {
 function addTask() {
 
     //TODO validar los datos
-    
+
 
     //obtener los datos del formulario
     $titulo = $_POST['taskName'];
     $descripcion = $_POST['taskDescription'];
     $prioridad = $_POST['taskPriority'];
-    $finalizada = 0;
+    
 
     //cuando los tengo los inserto en la base de datos
 
-    insertTask($titulo, $descripcion, $prioridad, $finalizada);
-
-    header('Location: ' . BASE_URL . 'listar');
+    $success = insertTask($titulo, $descripcion, $prioridad);
     
+    if($success) {
+        //redirijo a la pagina de listar
+        header('Location: ' . BASE_URL . 'listar');
+    } else {
+        echo "Error al insertar la tarea";
+    }
+   
+}
+
+
+//deleteTask($id)
+function removeTask($id) {
+    //elimino la tarea de la base de datos
+    $success = deleteTask($id);
+    if($success) {
+        //redirijo a la pagina de listar
+        header('Location: ' . BASE_URL . 'listar');
+    } else {
+        echo "Error al eliminar la tarea";
+    }
+   
 }

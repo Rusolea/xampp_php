@@ -10,6 +10,7 @@ if(!empty($_GET['action'])) {
 
 // listar todas las tareas de la base de datos showTasks()
 // agregar una tarea a la base de datos addTask()
+//eliminar una tarea de la base de datos deleteTask($id)
 
 //parse la accion para separar accion real de parametros
 $params = explode('/', $action);
@@ -21,6 +22,9 @@ switch($params[0]) {
         break;
     case 'agregar':
         addTask();
+        break;
+    case 'eliminar':
+        removeTask($params[1]);
         break;
     default:
         echo '404 - Página no encontrada';
