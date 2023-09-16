@@ -65,3 +65,20 @@ function deleteTask($id) {
     //devuelvo el id de la tarea insertada para verificar que se inserto correctamente
     return $success;
 }
+
+function finishTaskDb($id) {
+    $db = getConnection();
+    //preparo la sentencia para eliminar en la base de datos y prevengo inyeccion sql con ?, ?, ?,
+    //bindvalue es para asignarle un valor a cada ?
+    $sentencia = $db->prepare("UPDATE tareas SET finalizada=1 WHERE id=?"); 
+     
+    //ejecuto la sentencia
+    $sentencia->execute(array($id));
+
+    $success = $sentencia->execute(array($id));
+    //el id es autoincremental, no lo inserto
+
+    //inserto la tarea en la base de datos
+    //devuelvo el id de la tarea insertada para verificar que se inserto correctamente
+    return $success;
+}

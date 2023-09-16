@@ -24,17 +24,29 @@ function showTasks() {
             </tr>
         </thead>
         <tbody>
-            <?php foreach($tasks as $task): ?>
-                <tr>
-                    <td><?php echo $task->titulo ?></td>
-                    <td><?php echo $task->descripcion ?></td>
-                    <td><?php echo $task->prioridad ?></td>
-                    <td><?php echo $task->finalizada ?></td>
-                    <td><a href="eliminar/<?php echo $task->id; ?>" type="button" class="btn btn-danger">Eliminar</a></td>
+    <?php foreach($tasks as $task): ?>
+        <tr>
+            <td><?php echo $task->titulo ?></td>
+            <td><?php echo $task->descripcion ?></td>
+            <td><?php echo $task->prioridad ?></td>
+            <td>
+                <?php 
+                if ($task->finalizada) {
+                    echo '<span class="badge bg-success">Finalizada</span>'; // Clase de Bootstrap para tareas finalizadas
+                } else {
+                    echo '<span class="badge bg-danger">No Finalizada</span>'; // Clase de Bootstrap para tareas no finalizadas
+                }
+                ?>
+            </td>
+            <td><a href="eliminar/<?php echo $task->id; ?>" class="btn btn-danger">Eliminar</a></td>
+            <?php if(!$task->finalizada): ?>
+                <td><a href="finalizar/<?php echo $task->id; ?>" class="btn btn-success">Finalizar</a></td>
+            <?php endif; ?>
+        </tr>
+    <?php endforeach; ?>
+</tbody>
 
-                </tr>
-            <?php endforeach; ?>
-        </tbody>    
+  
 </table>
 
     
@@ -77,6 +89,18 @@ function removeTask($id) {
         header('Location: ' . BASE_URL . 'listar');
     } else {
         echo "Error al eliminar la tarea";
+    }
+   
+}
+
+function finishTask($id) {
+    //elimino la tarea de la base de datos
+    $success = finishTaskDb($id);
+    if($success) {
+        //redirijo a la pagina de listar
+        header('Location: ' . BASE_URL . 'listar');
+    } else {
+        echo "Error al finalizar la tarea";
     }
    
 }
